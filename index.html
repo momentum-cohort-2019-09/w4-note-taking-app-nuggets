@@ -7,23 +7,59 @@
     <script src="main.js" defer></script>
     <link rel="stylesheet" href="style.css">
     <title>Nugget Notes</title>
+    <script src = main.js defer></script>
 </head>
 <body>
-    <form id="login" action="">
-        <h2>Create a Login</h2>
-        <div id="usernameDiv">
-            <label for="username">Username</label>
-            <input type="text" name="username">
+    <h1>Nugget Notes</h1>
+    <form id= login>
+        <div class = 'input-field'>
+            <label for = 'username'>Username:</label>
+            <input id = 'username-text' type = 'text'>
         </div>
-
-        <div id="passwordDiv">
-            <label for="password">Password</label>
-            <input type="password" name="password">
+        <div class = 'input-field'>
+            <label for = 'password'>Password:</label>
+            <input id = 'password-text' type = 'text'>
         </div>
-        <button type="submit">Submit</button>
-
+        <div class = 'button'>
+            <button type = 'submit' value = 'Submit'>Sign In</button>
+        </div>
     </form>
-    <!-- This'll be where we throw all of the notes. Could do .innerHTML? -->
-    <div id="notes"></div>
+    <form id= create>
+        <div class = 'input-field'>
+            <label for = 'name'>Name:</label>
+            <input id= 'name-text' type = 'text'>
+        </div>
+        <div class = 'input-field'>
+            <label for = 'email'>Email:</label>
+            <input id = 'email-text' type = 'text'>
+        </div>
+        <div class = 'input-field'>
+            <label for = 'id'>ID:</label>
+            <input id = 'id-text' type = 'text'>
+        </div>
+        <div class = 'input-field'>
+            <label for = 'password'>Password:</label>
+            <input id = 'password-text' type = 'text'>
+        </div>
+        <div class = 'button'>
+                <button type = 'submit' value = 'Submit'>Create Account</button>
+        </div>
+    </form>
+    <form id= notes>
+        <div class = 'input-field'>
+            <label for = 'title'>Title:</label>
+            <input id = 'title-text' type = 'text'>
+        </div>
+        <div class = 'input-field'>
+            <label for = 'text'>Text:</label>
+            <input id = 'texty-text' type = 'text'>
+        </div>
+        <div class = 'button'>
+                <button type = 'submit' value = 'Submit'>Submit Tag</button>
+            </div>
+        <div class = 'button'>
+            <button type = 'submit' value = 'Submit'>Submit</button>
+        </div>
+    </form>
 </body>
 </html>
