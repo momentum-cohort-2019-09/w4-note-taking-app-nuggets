@@ -1,1 +1,8 @@
+#login {
+	visibility: visible;
+}
 
+#create,
+#notes {
+	visibility: hidden;
+}
