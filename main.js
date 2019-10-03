@@ -42,14 +42,18 @@ const app = {
 	},
 
 	login: function (username, password) {
-		fetch('https://notes-api.glitch.me/api/users', {
+		fetch('https://notes-api.glitch.me/api/notes', {
 			headers: {
 				'Authorization': 'Basic ' + btoa(`${username}:${password}`)
 			}
 		}).then(response => {
+			console.log('hElo')
 			if (response.ok) {
 				this.setCredientials(username, password);
 				document.querySelector('#login').classList.remove('input-invalid');
+				// Append all notes to the this.data.notes array
+				console.log({})
+
 				// Need a way to then render the notes for this given user,
 				// because the login was successful.
 			} else {
@@ -60,25 +64,7 @@ const app = {
 	},
 
 	getAllNotes: function () {
-		fetch('https://notes-api.glitch.me/api/notes', {
-			headers: {
-				Authoritization:
-					'Basic ' + btoa(`${this.data.credientials.username}:${this.data.credientials.password}`)
-			}
-		})
-			.then((response) => {
-				if (response.status === 401) {
-					// What if yknow
-				} else {
-					return response.json();
-				}
-			})
-			.then((response) => {
-				if (response.ok) {
-					document.getElementByID('note').innerHTML = data.map(generateNoteHTML).join('/n');
-				}
-			})
-			.catch((error) => { });
+		// Access the array and place all notes in our note div
 	},
 
 	updateNote: function (note /* Right? */) {
