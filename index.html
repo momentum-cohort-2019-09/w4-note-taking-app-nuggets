@@ -11,57 +11,37 @@
 </head>
 <body>
     <h1>Nugget Notes</h1>
-    
-    <form id= login>
-        <div class = 'input-field'>
-            <label for = 'username'>Username:</label>
-            <input id = 'username-text' type = 'text'>
-        </div>
-        <div class = 'input-field'>
-            <label for = 'password'>Password:</label>
-            <input id = 'password-text' type = 'text'>
-        </div>
-        <div class = 'button'>
-            <button type = 'submit' value = 'Submit'>Sign In</button>
-        </div>
-    </form>
 
-    <form id= create>
+    <form id="login">
         <div class = 'input-field'>
-            <label for = 'name'>Name:</label>
-            <input id= 'name-text' type = 'text'>
+            <label for='username'>Username:</label>
+            <input id='username-text' type='text' name="username" placeholder="LarrySommers">
         </div>
-        <div class = 'input-field'>
-            <label for = 'email'>Email:</label>
-            <input id = 'email-text' type = 'text'>
+        <div class='input-field'>
+            <label for='password'>Password:</label>
+            <input id='password-text' type='password' name="password" placeholder="TheLarryPass">
         </div>
-        <div class = 'input-field'>
-            <label for = 'id'>ID:</label>
-            <input id = 'id-text' type = 'text'>
-        </div>
-        <div class = 'input-field'>
-            <label for = 'password'>Password:</label>
-            <input id = 'password-text' type = 'text'>
-        </div>
-        <div class = 'button'>
-                <button type = 'submit' value = 'Submit'>Create Account</button>
+        <div class='button'>
+            <button type='submit' value='Submit'>Sign In</button>
         </div>
     </form>
 
     <form id= notes>
-        <div class = 'input-field'>
-            <label for = 'title'>Title:</label>
-            <input id = 'title-text' type = 'text'>
+        <div class='input-field'>
+            <label for='title'>Title:</label>
+            <input id='title-text' type='text' name="title" placeholder="Apples">
         </div>
-        <div class = 'input-field'>
-            <label for = 'text'>Text:</label>
-            <input id = 'texty-text' type = 'text'>
+        <div class='input-field'>
+            <label for='text'>Text:</label>
+            <textarea id='texty-text' type='text' name="text-area" placeholder="They are quite good. I have 5!"></textarea>
         </div>
-        <div class = 'button'>
-                <button type = 'submit' value = 'Submit'>Submit Tag</button>
-            </div>
-        <div class = 'button'>
-            <button type = 'submit' value = 'Submit'>Submit</button>
+        <div class='button'>
+            <label for="tag">Create Tag</label>
+            <input type="text" name="tag" placeholder="Food">
+            <button type='submit' value='Submit'>Submit Tag</button>
+        </div>
+        <div class='button'>
+            <button type='submit' value='Submit'>Submit Note</button>
         </div>
     </form>
 </body>

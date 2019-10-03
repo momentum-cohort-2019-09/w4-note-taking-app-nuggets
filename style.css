@@ -1,8 +1,20 @@
-#login {
-	visibility: visible;
+body {
+	text-align: center;
+	display: flex;
+	flex-direction: column;
 }
 
-#create,
+#login {
+	visibility: visible;
+	padding: 1rem;
+}
+
+#create {
+	visibility: visible;
+	padding: 1rem;
+}
+
 #notes {
-	visibility: hidden;
+	visibility: visible;
+	padding: 1rem;
 }
