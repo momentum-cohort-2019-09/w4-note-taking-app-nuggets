@@ -32,7 +32,7 @@ const app = {
 		// Easiability is nioce
 	},
 
-	setCredientials: function(username, password) {
+	setCredientials: function (username, password) {
 		this.data.credientials = {
 			username: username,
 			password: password
@@ -41,12 +41,12 @@ const app = {
 		sessionStorage.setItem('password', password);
 	},
 
-	login: function(username, password) {
+	login: function (username, password) {
 		fetch('https://notes-api.glitch.me/api/users', {
 			headers: {
-				Authorization: 'Basic ' + btoa(`${username}:${password}`)
+				'Authorization': 'Basic ' + btoa(`${username}:${password}`)
 			}
-		}).then((response) => {
+		}).then(response => {
 			if (response.ok) {
 				this.setCredientials(username, password);
 				document.querySelector('#login').classList.remove('input-invalid');
@@ -59,7 +59,7 @@ const app = {
 		});
 	},
 
-	getAllNotes: function() {
+	getAllNotes: function () {
 		fetch('https://notes-api.glitch.me/api/notes', {
 			headers: {
 				Authoritization:
@@ -78,21 +78,21 @@ const app = {
 					document.getElementByID('note').innerHTML = data.map(generateNoteHTML).join('/n');
 				}
 			})
-			.catch((error) => {});
+			.catch((error) => { });
 	},
 
-	updateNote: function(note /* Right? */) {
+	updateNote: function (note /* Right? */) {
 		// Needs to be able to take the given note and update title, text, and tags
 		// Using PUT with https://notes-api.glitch.me/api/notes/:id
 	},
 
-	deleteNote: function(note) {
+	deleteNote: function (note) {
 		// Needs to be able to DELETE a given note from the users notes array
 		// Then also DELETE the note from the API as well.
 		// Using DELETE with https://notes-api.glitch.me/api/notes/:id
 	},
 
-	getTaggedNotes: function(tag) {
+	getTaggedNotes: function (tag) {
 		// Needs to be able to get the tags given the clicked tag. Probably an eventListener? (For sure a later idea)
 		// Using GET with https://notes-api.glitch.me/api/notes/tagged/:tag
 	}
