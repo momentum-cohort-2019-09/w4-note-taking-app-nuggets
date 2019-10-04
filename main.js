@@ -15,6 +15,7 @@ function main() {
 		console.log({ loginData }, { username }, { password });
 		app.login(username, password);
 		app.getAllNotes();
+		console.log(app)
 	});
 }
 
@@ -26,7 +27,6 @@ const app = {
 		},
 		notes: []
 	},
-
 	setAuthHeader: function (headers) {
 		// This will auto populate the header for when we need authorization
 		// Easiability is nioce
@@ -79,6 +79,7 @@ const app = {
 				return response.json()
 			})
 			.then(function (data) {
+				this.data.notes = data
 				console.log({ data })
 			})
 	},
