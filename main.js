@@ -15,25 +15,31 @@ function main() {
 		console.log({ loginData }, { username }, { password });
 		app.login(username, password);
 		app.getAllNotes();
+		console.log(app)
 	});
 }
 
 const app = {
 	data: {
-		credientials: {
+		credentials: {
 			username: sessionStorage.getItem('username'),
 			password: sessionStorage.getItem('password')
 		},
 		notes: []
 	},
-
-	getAuthHeader() {
+	setAuthHeader: function (headers) {
 		// This will auto populate the header for when we need authorization
 		// Easiability is nioce
+		if (!headers) {
+			header = {}
+		}
+
+		return 'Basic ' + btoa(`${this.data.credientials.username}:${this.data.credientials.password}`)
 	},
 
-	setCredientials: function (username, password) {
-		this.data.credientials = {
+	setCredentials: function (username, password) {
+		this.data = {};
+		this.data.credentials = {
 			username: username,
 			password: password
 		};
@@ -47,12 +53,10 @@ const app = {
 				'Authorization': 'Basic ' + btoa(`${username}:${password}`)
 			}
 		}).then(response => {
-			console.log('hElo')
 			if (response.ok) {
-				this.setCredientials(username, password);
+				this.setCredentials(username, password);
 				document.querySelector('#login').classList.remove('input-invalid');
 				// Append all notes to the this.data.notes array
-				console.log({})
 
 				// Need a way to then render the notes for this given user,
 				// because the login was successful.
@@ -60,11 +64,24 @@ const app = {
 				document.querySelector('#login').classList.add('input-invalid');
 				document.querySelector('#error').innerText = 'That is not a valid username and password.';
 			}
-		});
+		})
 	},
 
 	getAllNotes: function () {
 		// Access the array and place all notes in our note div
+		fetch("https://notes-api.glitch.me/api/notes", {
+			headers: {
+				'Authorization': this.setAuthHeader(),
+				'Content-Type': 'application/json'
+			}
+		})
+			.then(function (response) {
+				return response.json()
+			})
+			.then(function (data) {
+				this.data.notes = data
+				console.log({ data })
+			})
 	},
 
 	updateNote: function (note /* Right? */) {
