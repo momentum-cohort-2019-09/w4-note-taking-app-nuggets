@@ -71,7 +71,7 @@ const app = {
 			tags = ``
 			for (let tag of note.tags) {
 				tags += `
-				<button onclick="${app.getTaggedNotes(tag)}" class="tag">${tag}</button>\n
+				<button class="tag">${tag}</button>\n
 				`
 			}
 			templateLiteral += `
@@ -129,6 +129,8 @@ function main() {
 		console.log({ loginData }, { username }, { password });
 		app.login(username, password);
 		app.getAllNotes();
+		let tags = document.querySelectorAll('.tag')
+		// How do we grab a specific tag that is clicked?
 	});
 }
 
