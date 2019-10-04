@@ -64,6 +64,25 @@ const app = {
 	},
 
 	render: function () {
+		let createNote = document.querySelector('#create-note')
+		if (!createNote) {
+			document.querySelector('#replacement').innerHTML = `
+			<div id='create-note'>
+				<div class='input-field'>
+					<label for='title'>Title:</label>
+					<input id='title-text' type='text' name="title" placeholder="Put title here">
+				</div>
+				<div class='input-field'>
+					<label for='text'>Text:</label>
+					<textarea id='texty-text' type='text' name="text-area" placeholder="Put description here"></textarea>
+				</div>
+				<div class='input-field'>
+					<label for='tag'>Tag:</label>
+					<input type="text" name="tag" placeholder="Separate with comma and space">
+				</div>
+				<button id="submitNote" type='submit' value='submit'>Submit Note</button>
+			</div>`
+		}
 		let templateLiteral = ``
 		console.log({ app })
 		// Grab the notes and then loop through them 
@@ -85,8 +104,9 @@ const app = {
 					<button type="button" class="trash">Delete</button
 				</div>
 			`
-			document.querySelector('#replacement').innerHTML = templateLiteral
+			document.querySelector('#notes').innerHTML = templateLiteral
 		}
+
 		let tagNodes = document.querySelectorAll(".tag")
 		console.log({ tagNodes })
 		for (let tag of tagNodes) {
@@ -96,28 +116,7 @@ const app = {
 			})
 		}
 		// Adding and also checking if the createNote area is made
-		let createNote = document.querySelector('#create-note')
-		if (!createNote) {
-			document.querySelector('#notes').innerHTML += `
-			<div id='create-note'>
-				<div class='input-field'>
-					<label for='title'>Title:</label>
-					<input id='title-text' type='text' name="title" placeholder="Put title here">
-				</div>
-				<div class='input-field'>
-					<label for='text'>Text:</label>
-					<textarea id='texty-text' type='text' name="text-area" placeholder="Put description here"></textarea>
-				</div>
-				<div class='input-field'>
-					<label for='tag'>Tag:</label>
-					<input type="text" name="tag" placeholder="Separate with comma and space">
-				</div>
-				<div class='button'>
-					<label for="tag">Create Tag</label>
-				</div>
-				<button id="submitNote" type='submit' value='submit'>Submit Note</button>
-			</div>`
-		}
+
 		let submitNote = document.querySelector('#submitNote')
 		submitNote.addEventListener('click', createNote())
 
@@ -127,10 +126,16 @@ const app = {
 		fetch("https://notes-api.glitch.me/api/notes", {
 			method: 'POST',
 			headers: {
-				'Authorization': this.setAuthHeader('Content-Type': 'application/json')
+				'Authorization': this.setAuthHeader()
 			}
 		})
-			.then()
+			.then(response => {
+				if (response.ok) {
+					let title = document.querySelector('#title-text').innerText
+					let textyText = document.querySelector('#texty-text').innerText
+					let tags = document.querySelector('#')
+				}
+			})
 	},
 
 	updateNote: function () {
