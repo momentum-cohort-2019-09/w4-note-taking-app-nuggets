@@ -25,7 +25,6 @@ const app = {
 			username: sessionStorage.getItem('username'),
 			password: sessionStorage.getItem('password')
 		},
-		notes: []
 	},
 	setAuthHeader: function (headers) {
 		// This will auto populate the header for when we need authorization
@@ -79,8 +78,7 @@ const app = {
 				return response.json()
 			})
 			.then(function (data) {
-				this.data.notes = data
-				console.log({ data })
+				app.data.notes = data
 			})
 	},
 
