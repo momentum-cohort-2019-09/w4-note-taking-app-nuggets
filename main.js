@@ -13,7 +13,7 @@ const app = {
 			header = {}
 		}
 
-		return 'Basic ' + btoa(`${this.data.credentials.username}:${this.data.credentials.password}`)
+		return 'Basic ' + btoa(`${this.data.credientials.username}:${this.data.credientials.password}`)
 	},
 
 	setCredentials: function (username, password) {
@@ -58,6 +58,13 @@ const app = {
 				return response.json()
 			})
 			.then(function (data) {
+<<<<<<< HEAD
+				this.data.notes = data
+				console.log({ data })
+			})
+	},
+
+=======
 				app.data.notes = data
 				app.render()
 			})
@@ -95,6 +102,7 @@ const app = {
 		}
 	},
 
+>>>>>>> f460267c00ce279dbed2fa458dcdb9bf5b63daaf
 	updateNote: function (note /* Right? */) {
 		// Needs to be able to take the given note and update title, text, and tags
 		// Using PUT with https://notes-api.glitch.me/api/notes/:id
@@ -121,6 +129,9 @@ const app = {
 	}
 };
 
+<<<<<<< HEAD
+main();
+=======
 function main() {
 	// This is for the login process
 	const login = document.querySelector('#login');
@@ -144,3 +155,4 @@ function main() {
 }
 
 main();
+>>>>>>> f460267c00ce279dbed2fa458dcdb9bf5b63daaf
