@@ -83,7 +83,15 @@ const app = {
 					</ul>
 				</div>
 			`
-			document.querySelector('#login').innerHTML = templateLiteral
+			document.querySelector('#replacement').innerHTML = templateLiteral
+		}
+		let tagNodes = document.querySelectorAll(".tag")
+		console.log({ tagNodes })
+		for (let tag of tagNodes) {
+			tag.addEventListener('click', event => {
+				console.log({ tag })
+				this.getTaggedNotes(tag.innerText)
+			})
 		}
 	},
 
@@ -99,6 +107,7 @@ const app = {
 	},
 
 	getTaggedNotes: function (tag) {
+		console.log({ tag })
 		fetch(`https://notes-api.glitch.me/api/notes/tagged/${tag}`, {
 			headers: {
 				'Authorization': this.setAuthHeader()
@@ -129,9 +138,9 @@ function main() {
 		console.log({ loginData }, { username }, { password });
 		app.login(username, password);
 		app.getAllNotes();
-		let tags = document.querySelectorAll('.tag')
 		// How do we grab a specific tag that is clicked?
 	});
+
 }
 
 main();
