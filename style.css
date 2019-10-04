@@ -5,35 +5,30 @@
 }
 
 body {
+	display: flex;
+	flex-direction: column;
 	background-color: #f9f9a6;
 	font-family: 'Open Sans Condensed', sans-serif;
 }
 
 h1 {
-	letter-spacing: 2px; 
-	text-align: center; 
+	letter-spacing: 2px;
+	text-align: center;
 }
 
-
 #login {
-	display: flex; 
-	flex-direction: column; 
 	visibility: visible;
-	padding: 400px; 
-	position: right; 
+	padding: 40px;
+	/* position: right; */
 }
 
 #create {
-	display: flex;
-	flex-direction: column;
 	visibility: visible;
 	padding: 1rem;
 }
 
 #notes {
-	display: flex;
-	flex-direction: column; 
 	visibility: visible;
+	padding: 40px;
 	padding: 1rem;
 }
-
