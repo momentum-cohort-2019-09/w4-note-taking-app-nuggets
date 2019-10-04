@@ -1,30 +1,10 @@
-function main() {
-	// This is for the login process
-	const login = document.querySelector('#login');
-	document.querySelector('#login').addEventListener('submit', (event) => {
-		event.preventDefault();
-
-		// Must initially grab the form
-		const loginData = new FormData(login);
-		// We are getting these via their -name- attributes.
-		// Throw some console logs below for clarification.
-		// Not sure if it being called loginData is confusing,
-		// but we can set it back to formData if that is more readable.
-		const username = loginData.get('username');
-		const password = loginData.get('password');
-		console.log({ loginData }, { username }, { password });
-		app.login(username, password);
-		app.getAllNotes();
-		console.log(app)
-	});
-}
-
 const app = {
 	data: {
 		credentials: {
 			username: sessionStorage.getItem('username'),
 			password: sessionStorage.getItem('password')
 		},
+		notes: []
 	},
 	setAuthHeader: function (headers) {
 		// This will auto populate the header for when we need authorization
@@ -78,11 +58,43 @@ const app = {
 				return response.json()
 			})
 			.then(function (data) {
+<<<<<<< HEAD
 				this.data.notes = data
 				console.log({ data })
 			})
 	},
 
+=======
+				app.data.notes = data
+				app.render()
+			})
+	},
+
+	render: function () {
+		let templateLiteral = ``
+		console.log({ app })
+		// Grab the notes and then loop through them 
+		for (let note of this.data.notes.notes) {
+			tags = ``
+			for (let tag of note.tags) {
+				tags += `
+				<button class="tag">${tag}</button>\n
+				`
+			}
+			templateLiteral += `
+				<div class="note">
+					<h3 class="title">${note.title}</h3>
+					<p class="text">${note.text}</p>
+					<ul class="tag-list">
+						${tags}
+					</ul>
+				</div>
+			`
+			document.querySelector('#login').innerHTML = templateLiteral
+		}
+	},
+
+>>>>>>> f460267c00ce279dbed2fa458dcdb9bf5b63daaf
 	updateNote: function (note /* Right? */) {
 		// Needs to be able to take the given note and update title, text, and tags
 		// Using PUT with https://notes-api.glitch.me/api/notes/:id
@@ -95,9 +107,43 @@ const app = {
 	},
 
 	getTaggedNotes: function (tag) {
-		// Needs to be able to get the tags given the clicked tag. Probably an eventListener? (For sure a later idea)
-		// Using GET with https://notes-api.glitch.me/api/notes/tagged/:tag
+		fetch(`https://notes-api.glitch.me/api/notes/tagged/${tag}`, {
+			headers: {
+				'Authorization': this.setAuthHeader()
+			}
+		})
+			.then(response => response.json())
+			.then(data => {
+				app.data.notes = data
+				this.render()
+			})
 	}
 };
 
+<<<<<<< HEAD
 main();
+=======
+function main() {
+	// This is for the login process
+	const login = document.querySelector('#login');
+	document.querySelector('#login').addEventListener('submit', (event) => {
+		event.preventDefault();
+
+		// Must initially grab the form
+		const loginData = new FormData(login);
+		// We are getting these via their -name- attributes.
+		// Throw some console logs below for clarification.
+		// Not sure if it being called loginData is confusing,
+		// but we can set it back to formData if that is more readable.
+		const username = loginData.get('username');
+		const password = loginData.get('password');
+		console.log({ loginData }, { username }, { password });
+		app.login(username, password);
+		app.getAllNotes();
+		let tags = document.querySelectorAll('.tag')
+		// How do we grab a specific tag that is clicked?
+	});
+}
+
+main();
+>>>>>>> f460267c00ce279dbed2fa458dcdb9bf5b63daaf
