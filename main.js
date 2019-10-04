@@ -13,7 +13,7 @@ const app = {
 			header = {}
 		}
 
-		return 'Basic ' + btoa(`${this.data.credientials.username}:${this.data.credientials.password}`)
+		return 'Basic ' + btoa(`${this.data.credentials.username}:${this.data.credentials.password}`)
 	},
 
 	setCredentials: function (username, password) {
@@ -58,13 +58,6 @@ const app = {
 				return response.json()
 			})
 			.then(function (data) {
-<<<<<<< HEAD
-				this.data.notes = data
-				console.log({ data })
-			})
-	},
-
-=======
 				app.data.notes = data
 				app.render()
 			})
@@ -83,11 +76,13 @@ const app = {
 			}
 			templateLiteral += `
 				<div class="note">
-					<h3 class="title">${note.title}</h3>
+					<h4 class="title">${note.title}</h4>
 					<p class="text">${note.text}</p>
 					<ul class="tag-list">
 						${tags}
 					</ul>
+					<button type="button" class="update">Update</button>
+					<button type="button" class="trash">Delete</button
 				</div>
 			`
 			document.querySelector('#replacement').innerHTML = templateLiteral
@@ -100,18 +95,56 @@ const app = {
 				this.getTaggedNotes(tag.innerText)
 			})
 		}
+		// Adding and also checking if the createNote area is made
+		let createNote = document.querySelector('#create-note')
+		if (!createNote) {
+			document.querySelector('#notes').innerHTML += `
+			<div id='create-note'>
+				<div class='input-field'>
+					<label for='title'>Title:</label>
+					<input id='title-text' type='text' name="title" placeholder="Put title here">
+				</div>
+				<div class='input-field'>
+					<label for='text'>Text:</label>
+					<textarea id='texty-text' type='text' name="text-area" placeholder="Put description here"></textarea>
+				</div>
+				<div class='input-field'>
+					<label for='tag'>Tag:</label>
+					<input type="text" name="tag" placeholder="Separate with comma and space">
+				</div>
+				<div class='button'>
+					<label for="tag">Create Tag</label>
+				</div>
+				<button id="submitNote" type='submit' value='submit'>Submit Note</button>
+			</div>`
+		}
+		let submitNote = document.querySelector('#submitNote')
+		submitNote.addEventListener('click', createNote())
+
 	},
 
->>>>>>> f460267c00ce279dbed2fa458dcdb9bf5b63daaf
-	updateNote: function (note /* Right? */) {
+	createNote: function () {
+		fetch("https://notes-api.glitch.me/api/notes", {
+			method: 'POST',
+			headers: {
+				'Authorization': this.setAuthHeader('Content-Type': 'application/json')
+			}
+		})
+			.then()
+	},
+
+	updateNote: function () {
 		// Needs to be able to take the given note and update title, text, and tags
 		// Using PUT with https://notes-api.glitch.me/api/notes/:id
+
+
 	},
 
 	deleteNote: function (note) {
 		// Needs to be able to DELETE a given note from the users notes array
 		// Then also DELETE the note from the API as well.
 		// Using DELETE with https://notes-api.glitch.me/api/notes/:id
+
 	},
 
 	getTaggedNotes: function (tag) {
@@ -129,9 +162,6 @@ const app = {
 	}
 };
 
-<<<<<<< HEAD
-main();
-=======
 function main() {
 	// This is for the login process
 	const login = document.querySelector('#login');
@@ -155,4 +185,3 @@ function main() {
 }
 
 main();
->>>>>>> f460267c00ce279dbed2fa458dcdb9bf5b63daaf
