@@ -21,7 +21,7 @@ function main() {
 
 const app = {
 	data: {
-		credientials: {
+		credentials: {
 			username: sessionStorage.getItem('username'),
 			password: sessionStorage.getItem('password')
 		},
@@ -33,12 +33,12 @@ const app = {
 			header = {}
 		}
 
-		return 'Basic ' + btoa(`${this.data.credientials.username}:${this.data.credientials.password}`)
+		return 'Basic ' + btoa(`${this.data.credentials.username}:${this.data.credentials.password}`)
 	},
 
-	setCredientials: function (username, password) {
+	setCredentials: function (username, password) {
 		this.data = {};
-		this.data.credientials = {
+		this.data.credentials = {
 			username: username,
 			password: password
 		};
@@ -53,7 +53,7 @@ const app = {
 			}
 		}).then(response => {
 			if (response.ok) {
-				this.setCredientials(username, password);
+				this.setCredentials(username, password);
 				document.querySelector('#login').classList.remove('input-invalid');
 				// Append all notes to the this.data.notes array
 
@@ -80,6 +80,10 @@ const app = {
 			.then(function (data) {
 				app.data.notes = data
 			})
+	},
+
+	render: function () {
+
 	},
 
 	updateNote: function (note /* Right? */) {
