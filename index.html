@@ -12,7 +12,7 @@
 </head>
 <body>
     <h1>Nugget Notes</h1>
-    <div id="replacement">
+    <div id="replacement"> <!-- id = createNote-->
         <form id="login">
             <div class = 'input-field'>
                 <label for='username'>Username:</label>
@@ -26,6 +26,24 @@
             <button type='submit' value='submit'>Sign In</button>
         </form>
     </div>
+
+    <form id="createNote" class="hidden" action="">
+        <div id='create-note'>
+            <div class='input-field'>
+                <label for='title'>Title:</label>
+                <input id='titleText' type='text' name="title" placeholder="Put title here">
+            </div>
+            <div class='input-field'>
+                <label for='text'>Text:</label>
+                <textarea id='textyText' type='text' name="text-area" placeholder="Put description here"></textarea>
+            </div>
+            <div class='input-field'>
+                <label for='tag'>Tag:</label>
+                <input id="tags" type="text" name="tag" placeholder="Separate with comma and space">
+            </div>
+            <button id="submitNote" type='submit' value='submit'>Submit Note</button>
+        </div>
+    </form>
 
     <form id="notes"></form>
 </body>
