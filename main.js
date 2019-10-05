@@ -1,8 +1,8 @@
 const app = {
 	data: {
 		credentials: {
-			username: sessionStorage.getItem('username'),
-			password: sessionStorage.getItem('password')
+			username: 'charlie'/*sessionStorage.getItem('username')*/,
+			password: 'mypass'/*sessionStorage.getItem('password')*/
 		},
 		notes: []
 	},
@@ -10,6 +10,7 @@ const app = {
 		if (!headers) {
 			header = {}
 		}
+		console.log(this.data.credentials.username, this.data.credentials.password)
 
 		return 'Basic ' + btoa(`${this.data.credentials.username}:${this.data.credentials.password}`)
 	},
@@ -26,7 +27,7 @@ const app = {
 	login: function (username, password) {
 		fetch('https://notes-api.glitch.me/api/notes', {
 			headers: {
-				'Authorization': 'Basic ' + btoa(`${username}:${password}`)
+				'Authorization': this.setAuthHeader()
 			}
 		}).then(response => {
 			if (response.ok) {
@@ -99,11 +100,11 @@ const app = {
 	},
 
 	createNote: function (title, text, tags) {
-		let tagsSplit = tags.split(',').map(tag => tag.trim())
+		let tagsSplit = tags.split(',').map(tag => tag)
 		console.log({tagsSplit})
 		fetch("https://notes-api.glitch.me/api/notes", {
 			method: 'POST',
-			body: JSON.stringify({`title`: title, `text`: text, `tags`: tagsSplit}),
+			body: JSON.stringify({"title": title, "text": text, "tags": tagsSplit}),
 			headers: {
 				'Authorization': this.setAuthHeader(),
 				'Content-Type': 'application/json'
@@ -112,6 +113,9 @@ const app = {
 			.then(response => {
 				if (response.ok) {
 					app.getAllNotes()
+					title.innerText = ""
+					text.innerText = ""
+					tags.innerText = ""
 				} 
 			})
 	},
@@ -163,9 +167,10 @@ function main() {
 	let submitNote = document.querySelector('#submitNote')
 	submitNote.addEventListener('click', event => {
 		event.preventDefault()
-		let title = document.querySelector('#titleText').innerText
-		let textyText = document.querySelector('#textyText').innerText
-		let tags = document.querySelector('#tags').innerText
+		let title = document.querySelector('#titleText').value
+		let textyText = document.querySelector('#textyText').value
+		let tags = document.querySelector('#tags').value
+		console.log({tags}, {textyText}, {title})
 		app.createNote(title, textyText, tags)
 	})
 }
