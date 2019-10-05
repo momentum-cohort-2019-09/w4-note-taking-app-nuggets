@@ -8,12 +8,13 @@ body {
 	display: flex;
 	flex-direction: column;
 	background-color: #f9f9a6;
-	font-family: 'Open Sans Condensed', sans-serif;
+	font-family: 'Mansalva', cursive;
 }
 
 h1 {
 	letter-spacing: 2px;
 	text-align: center;
+	font-family: 'Mansalva', cursive;
 }
 
 #login {
@@ -24,7 +25,6 @@ h1 {
 
 #create {
 	visibility: visible;
-	padding: 1rem;
 }
 
 #notes {
