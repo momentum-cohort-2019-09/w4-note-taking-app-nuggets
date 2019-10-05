@@ -113,11 +113,28 @@ const app = {
 			.then(response => {
 				if (response.ok) {
 					app.getAllNotes()
-					title.innerText = ""
-					text.innerText = ""
-					tags.innerText = ""
+					app.replaceCreateNote()
 				} 
 			})
+	},
+
+	replaceCreateNote: function() {
+		let newCreateNote = document.querySelector('#createNote')
+		newCreateNote.innerHTML = `<div id='create-note'>
+            <div class='input-field'>
+                <label for='title'>Title:</label>
+                <input id='titleText' type='text' name="title" placeholder="Put title here">
+            </div>
+            <div class='input-field'>
+                <label for='text'>Text:</label>
+                <textarea id='textyText' type='text' name="text-area" placeholder="Put description here"></textarea>
+            </div>
+            <div class='input-field'>
+                <label for='tag'>Tag:</label>
+                <input id="tags" type="text" name="tag" placeholder="Separate with comma and space">
+            </div>
+            <button id="submitNote" type='submit' value='submit'>Submit Note</button>
+        </div>`
 	},
 
 	updateNote: function () {
@@ -161,9 +178,12 @@ function main() {
 		console.log({ loginData }, { username }, { password });
 		app.login(username, password);
 		app.getAllNotes();
-
+	
 	});
 
+	let tags = document.querySelectorAll('.tag')
+	console.log({tags})
+	
 	let submitNote = document.querySelector('#submitNote')
 	submitNote.addEventListener('click', event => {
 		event.preventDefault()
@@ -173,6 +193,8 @@ function main() {
 		console.log({tags}, {textyText}, {title})
 		app.createNote(title, textyText, tags)
 	})
+
+	
 }
 
 main();
