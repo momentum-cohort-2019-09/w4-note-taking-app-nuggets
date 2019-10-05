@@ -4,11 +4,11 @@ const app = {
 			username: sessionStorage.getItem('username'),
 			password: sessionStorage.getItem('password')
 		},
-		notes: []
+		nuggets: []
 	},
 	setAuthHeader: function (headers) {
 		// This will auto populate the header for when we need authorization
-		// Easiability is nioce
+		// Ease-ability is nice
 		if (!headers) {
 			header = {}
 		}
@@ -17,7 +17,6 @@ const app = {
 	},
 
 	setCredentials: function (username, password) {
-		this.data = {};
 		this.data.credentials = {
 			username: username,
 			password: password
@@ -28,65 +27,67 @@ const app = {
 
 	login: function (username, password) {
 		fetch('https://notes-api.glitch.me/api/notes', {
+			// Naturally does GET but just clarifying
 			headers: {
-				'Authorization': 'Basic ' + btoa(`${username}:${password}`)
-			}
-		}).then(response => {
-			if (response.ok) {
-				this.setCredentials(username, password);
-				document.querySelector('#login').classList.remove('input-invalid');
-				// Append all notes to the this.data.notes array
-
-				// Need a way to then render the notes for this given user,
-				// because the login was successful.
-			} else {
-				document.querySelector('#login').classList.add('input-invalid');
-				document.querySelector('#error').innerText = 'That is not a valid username and password.';
-			}
+				'Authorization': this.setAuthHeader,
+			},
 		})
+			.then(response => {
+				if (response.ok) {
+					this.setCredentials(username, password);
+					hideLoginForm()
+					this.render()
+				} else {
+					showLoginForm()
+					document.querySelector('#login').classList.add('input-invalid');
+					document.querySelector('#error').innerText = 'That is not a valid username and password.';
+				}
+			})
 	},
 
 	getAllNotes: function () {
-		// Access the array and place all notes in our note div
 		fetch("https://notes-api.glitch.me/api/notes", {
 			headers: {
-				'Authorization': this.setAuthHeader(),
-				'Content-Type': 'application/json'
+				Authorization: this.setAuthHeader(),
 			}
 		})
 			.then(function (response) {
 				return response.json()
 			})
 			.then(function (data) {
-				app.data.notes = data
+				console.log({ data })
+				console.log(this)
+				// console.log(app)
+				// app.data.nuggets.push('')
+				// app.data.nuggets.push(data.notes)
 				app.render()
 			})
 	},
 
 	render: function () {
-		let createNote = document.querySelector('#create-note')
+		// Adding and also checking if the createNote area is made
+		let createNote = document.querySelector('.create-note')
 		if (!createNote) {
-			document.querySelector('#replacement').innerHTML = `
-			<div id='create-note'>
+			document.querySelector('#createNote').innerHTML = `
+			<div class='create-note'>
 				<div class='input-field'>
 					<label for='title'>Title:</label>
 					<input id='title-text' type='text' name="title" placeholder="Put title here">
 				</div>
 				<div class='input-field'>
 					<label for='text'>Text:</label>
-					<textarea id='texty-text' type='text' name="text-area" placeholder="Put description here"></textarea>
+					<textarea id='textyText' type='text' name="text-area" placeholder="Put description here"></textarea>
 				</div>
 				<div class='input-field'>
 					<label for='tag'>Tag:</label>
-					<input type="text" name="tag" placeholder="Separate with comma and space">
+					<input id="tags" type="text" name="tag" placeholder="Separate with comma">
 				</div>
 				<button id="submitNote" type='submit' value='submit'>Submit Note</button>
 			</div>`
 		}
 		let templateLiteral = ``
 		console.log({ app })
-		// Grab the notes and then loop through them 
-		for (let note of this.data.notes.notes) {
+		for (let note of app.data.nuggets.notes) {
 			tags = ``
 			for (let tag of note.tags) {
 				tags += `
@@ -115,33 +116,35 @@ const app = {
 				this.getTaggedNotes(tag.innerText)
 			})
 		}
-		// Adding and also checking if the createNote area is made
 
 		let submitNote = document.querySelector('#submitNote')
-		submitNote.addEventListener('click', createNote())
+		submitNote.addEventListener('click', () => this.createNote())
 
 	},
 
 	createNote: function () {
-		fetch("https://notes-api.glitch.me/api/notes", {
+		let createNoteForm = new FormData(document.querySelector('#createNote'))
+		let tags = createNoteForm.tags.split(',').trim()
+		return fetch("https://notes-api.glitch.me/api/notes", {
 			method: 'POST',
 			headers: {
 				'Authorization': this.setAuthHeader()
-			}
+			},
+			body: JSON.stringify({ 'title': createNoteForm.title, 'text': createNoteForm.textyText, 'tags': tags })
 		})
 			.then(response => {
 				if (response.ok) {
-					let title = document.querySelector('#title-text').innerText
-					let textyText = document.querySelector('#texty-text').innerText
-					let tags = document.querySelector('#')
+					this.getAllNotes()
 				}
 			})
+			.catch(error => [
+				console.log({ error })
+			])
 	},
 
 	updateNote: function () {
 		// Needs to be able to take the given note and update title, text, and tags
 		// Using PUT with https://notes-api.glitch.me/api/notes/:id
-
 
 	},
 
@@ -161,30 +164,44 @@ const app = {
 		})
 			.then(response => response.json())
 			.then(data => {
-				app.data.notes = data
+				app.data.nuggets = data
 				this.render()
 			})
 	}
 };
 
+function showLoginForm() {
+	document.getElementById('login').classList.remove('hidden')
+	document.getElementById('notes').classList.add('hidden')
+}
+
+function hideLoginForm() {
+	document.getElementById('login').classList.add('hidden')
+	document.getElementById('notes').classList.remove('hidden')
+}
+
 function main() {
 	// This is for the login process
-	const login = document.querySelector('#login');
-	document.querySelector('#login').addEventListener('submit', (event) => {
-		event.preventDefault();
 
-		// Must initially grab the form
+	// TODO
+	// check if logged in
+	//   if so - app.getAllNotes()
+	//         - also hide login form
+	// else
+	//    you good!
+
+	const login = document.querySelector('#login');
+	login.addEventListener('submit', (event) => {
+		event.preventDefault();
+		console.log({ app }, 'I am the first')
 		const loginData = new FormData(login);
-		// We are getting these via their -name- attributes.
-		// Throw some console logs below for clarification.
-		// Not sure if it being called loginData is confusing,
-		// but we can set it back to formData if that is more readable.
 		const username = loginData.get('username');
 		const password = loginData.get('password');
 		console.log({ loginData }, { username }, { password });
 		app.login(username, password);
+		console.log({ app }, 'I am the second')
 		app.getAllNotes();
-		// How do we grab a specific tag that is clicked?
+		console.log({ app }, 'I am the third')
 	});
 
 }

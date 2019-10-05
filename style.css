@@ -11,6 +11,14 @@ body {
 	font-family: 'Open Sans Condensed', sans-serif;
 }
 
+#replacement {
+	padding: 0 1.5rem;
+}
+
+.hidden {
+	display: none;
+}
+
 h1 {
 	letter-spacing: 2px;
 	text-align: center;
@@ -22,13 +30,14 @@ h1 {
 	/* position: right; */
 }
 
-#create {
-	visibility: visible;
-	padding: 1rem;
-}
-
 #notes {
 	visibility: visible;
-	padding: 40px;
-	padding: 1rem;
+	padding: 50px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+
+.note {
+	max-width: 200px;
 }
