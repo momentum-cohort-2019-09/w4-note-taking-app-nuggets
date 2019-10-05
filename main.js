@@ -65,7 +65,6 @@ const app = {
 
 		let templateLiteral = ``
 		console.log({ app })
-		// Grab the notes and then loop through them 
 		for (let note of this.data.notes.notes) {
 			tags = ``
 			for (let tag of note.tags) {
@@ -91,11 +90,11 @@ const app = {
 		console.log({ tagNodes })
 		for (let tag of tagNodes) {
 			tag.addEventListener('click', event => {
+				event.preventDefault()
 				console.log({ tag })
 				this.getTaggedNotes(tag.innerText)
 			})
 		}
-		// Adding and also checking if the createNote area is made
 
 	},
 
@@ -180,12 +179,9 @@ function main() {
 		app.getAllNotes();
 	
 	});
-
-	let tags = document.querySelectorAll('.tag')
-	console.log({tags})
 	
 	let submitNote = document.querySelector('#submitNote')
-	submitNote.addEventListener('click', event => {
+	submitNote.addEventListener('submit', event => {
 		event.preventDefault()
 		let title = document.querySelector('#titleText').value
 		let textyText = document.querySelector('#textyText').value
