@@ -9,6 +9,7 @@ body {
 	flex-direction: column;
 	background-color: #f9f9a6;
 	font-family: 'Mansalva', cursive;
+	justify-content: space-around;
 }
 
 #replacement {
@@ -22,6 +23,10 @@ body {
 h1 {
 	letter-spacing: 2px;
 	text-align: center;
+	font-family: 'Mansalva', cursive;
+}
+
+h4 {
 	font-family: 'Mansalva', cursive;
 }
 
@@ -53,10 +58,27 @@ h1 {
 }
 
 .note {
-	max-width: 250px;
-	border: 1px solid black;
+	background: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), url(nuggets.png);
+	background-position: center;
+	background-size: cover;
+	object-fit: contain;
+	max-width: 300px;
+	min-width: 200px
+	height: 300px;
+	margin: 10px;
 }
 
 .hidden {
 	display: none;
+}
+
+.nuggetMascot {
+	width: 50%;
+}
+
+#replacement {
+	display: flex;
+	text-align: center;
+	flex-direction: column;
+	justify-content: space-evenly;
 }

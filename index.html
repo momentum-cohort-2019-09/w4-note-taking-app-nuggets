@@ -7,11 +7,13 @@
     <link rel="stylesheet" href="https://cdn.shoelace.style/1.0.0-beta24/shoelace.css">
     <link href="https://fonts.googleapis.com/css?family=Mansalva&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" type="image/png" href="/Nugget-Mascot.png" />
     <title>Nugget Notes</title>
     <script src="main.js" defer></script>
 </head>
 <body>
     <h1>Nugget Notes</h1>
+    <img class="nuggetMascot" src="Nugget-Mascot.png" alt="The Nugget Notes Mascot">
     <div id="replacement"> <!-- id = createNote-->
         <form id="login">
             <div class = 'input-field'>
@@ -28,6 +30,7 @@
     </div>
 
     <form id="createNote" class="hidden"  action="">
+        <h1>Create Note</h1>
         <div class='input-field'>
             <label for='title'>Title:</label>
             <input id='titleText' type='text' name="title" placeholder="Put title here">
@@ -41,6 +44,7 @@
             <input id="tags" type="text" name="tag" placeholder="Separate with space">
         </div>
         <button id="submitNote" type='submit' value='submit'>Submit Note</button>
+        <button id="getAll" class="hidden">Get Back Notes</button>
     </form>
 
     <form id="notes"></form>
