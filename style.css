@@ -48,6 +48,10 @@ h1 {
 	flex-direction: row;
 }
 
+#createNote {
+	padding: 0 .75rem;
+}
+
 .note {
 	max-width: 250px;
 	border: 1px solid black;
