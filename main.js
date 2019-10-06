@@ -72,6 +72,7 @@ const app = {
 		for (let note of this.data.notes.notes) {
 			noteIds.push(note._id)
 			tags = ``
+			console.log({note})
 			for (let tag of note.tags) {
 				tags += `
 				<button class="tag">${tag}</button>
@@ -80,7 +81,7 @@ const app = {
 			let noteID = note._id
 			console.log({noteID})
 			templateLiteral += `
-				<div class="note" data-id="${note._id}>
+				<div class="note" data-id="${note._id}">
 					<h4 class="title">${note.title}</h4>
 					<p class="text">${note.text}</p>
 					<ul class="tag-list">
@@ -108,7 +109,10 @@ const app = {
 		for (let deleteNode of deleteNodes) {
 			deleteNode.addEventListener('click', event => {
 				event.preventDefault()
-				let id = deleteNode.dataset.id
+				console.log({deleteNode})
+				let parent = deleteNode.parentNode
+				console.log({parent})
+				let id = deleteNode.parentNode.dataset.id
 				console.log({ id })
 				this.deleteNote(deleteNode.parentNode.dataset.id)
 			})
@@ -169,7 +173,7 @@ const app = {
 		})
 		.then(response => {
 			if(response.ok) {
-				app.data.notes = app.data.notes.filter((note) => note._id !== noteID)
+				app.data.notes = app.data.notes.notes.filter((note) => note._id !== noteID)
 				app.getAllNotes()
 			} 
 		})
