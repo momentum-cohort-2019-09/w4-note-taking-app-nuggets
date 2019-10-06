@@ -7,11 +7,6 @@ const app = {
 		nuggets: []
 	},
 	setAuthHeader: function (headers) {
-<<<<<<< HEAD
-		// This will auto populate the header for when we need authorization
-		// Ease-ability is nice
-=======
->>>>>>> 3ce0745289274386cc380bc5b4bd33c797b08b71
 		if (!headers) {
 			header = {}
 		}
@@ -29,29 +24,13 @@ const app = {
 		sessionStorage.setItem('password', password);
 	},
 
+
 	login: function (username, password) {
 		fetch('https://notes-api.glitch.me/api/notes', {
 			// Naturally does GET but just clarifying
 			headers: {
-<<<<<<< HEAD
-				'Authorization': this.setAuthHeader,
-			},
-=======
 				'Authorization': this.setAuthHeader()
 			}
-		}).then(response => {
-			if (response.ok) {
-				this.setCredentials(username, password);
-				document.querySelector('#login').classList.remove('input-invalid');
-
-				document.querySelector('#login').classList.add('hidden')
-				document.querySelector('#createNote').classList.remove('hidden')
-
-			} else {
-				document.querySelector('#login').classList.add('input-invalid');
-				document.querySelector('#error').innerText = 'That is not a valid username and password.';
-			}
->>>>>>> 3ce0745289274386cc380bc5b4bd33c797b08b71
 		})
 			.then(response => {
 				if (response.ok) {
@@ -77,10 +56,8 @@ const app = {
 			})
 			.then(function (data) {
 				console.log({ data })
+				app.data.nuggets = data
 				console.log(this)
-				// console.log(app)
-				// app.data.nuggets.push('')
-				// app.data.nuggets.push(data.notes)
 				app.render()
 			})
 	},
@@ -91,9 +68,10 @@ const app = {
 
 	render: function () {
 		// Adding and also checking if the createNote area is made
-		let createNote = document.querySelector('.create-note')
-		if (!createNote) {
-			document.querySelector('#createNote').innerHTML = `
+		// let createNote = document.querySelector('.create-note')
+		// if (!createNote) {
+		document.querySelector('#createNote').classList.remove('hidden')
+		document.querySelector('#createNote').innerHTML = `
 			<div class='create-note'>
 				<div class='input-field'>
 					<label for='title'>Title:</label>
@@ -109,7 +87,7 @@ const app = {
 				</div>
 				<button id="submitNote" type='submit' value='submit'>Submit Note</button>
 			</div>`
-		}
+		// }
 		let templateLiteral = ``
 		let noteIds = []
 		console.log({ app })
@@ -167,7 +145,7 @@ const app = {
 				event.preventDefault()
 				let parent = editNode.parentElement
 				console.log({ parent })
-				this.updateNote(parent)
+				this.replaceCreateWithEdit(parent)
 			})
 		}
 
@@ -214,43 +192,62 @@ const app = {
         </div>`
 	},
 
-	updateNote: function (parent) {
+	replaceCreateWithEdit: function (parent) {
+		let templateLiteral = `
+					<div id='create-note'>
+						<div class='input-field'>
+							<label for='title'>Title:</label>
+							<input value="${parent.children[0].innerText}" id='titleText' type='text' name="title" placeholder="Put title here">
+						</div>
+						<div class='input-field'>
+							<label for='text'>Text:</label>
+							<textarea value="" id='textyText' type='text' name="text-area" placeholder="Put description here">${parent.children[1].innerText}</textarea>
+						</div>
+						<div class='input-field'>
+							<label for='tag'>Tag:</label>
+							<input value="${parent.children[2].innerText}" id="tags" type="text" name="tag" placeholder="Separate with space">
+						</div>
+						<button id="editNote" type='submit' value='submit'>Edit Note</button>
+					</div>`
+
+		document.querySelector('#createNote').innerHTML = templateLiteral
+		document.querySelector('#editNote').addEventListener('click', event => {
+			event.preventDefault()
+			let edit = document.querySelector('#create-note')
+			let id = parent.dataset.id
+			console.log({ id })
+			// Idea here is that when you click Edit Note, that then it will grab 
+			// the info and then change it in the updateNote function
+			this.updateNote(parent.dataset.id, edit)
+		})
+	},
+
+	updateNote: function (noteID, parent) {
 		console.log({ parent })
-		let noteID = parent.dataset.id
+		// let noteID = parent.dataset.id
 		console.log({ noteID })
-		let title = parent.children[0].innerText
-		let text = parent.children[1].innerText
-		let tags = parent.children[2].innerText
+		// Time to extract that info. Lets get weird. It's late
+		// SCALE DOWN! FIND THE INFO!
+		let title = parent.children[0].childNodes[3].value
+		let text = parent.children[1].children[1].value
+		// splitting it so that it becomes an array so that it can be properly replaced 
+		let tags = parent.children[2].children[1].value.split(' ')
 		fetch(`https://notes-api.glitch.me/api/notes/${noteID}`, {
 			method: 'PUT',
+			body: JSON.stringify({ "title": title, "text": text, "tags": tags }),
 			headers: {
 				Authorization: this.setAuthHeader(),
-				'Content-Type': 
+				'Content-Type': 'application/json'
 			}
 		})
 			.then(response => {
 				if (response.ok) {
-					let templateLiteral = `
-				<div id='create-note'>
-					<div class='input-field'>
-						<label for='title'>Title:</label>
-						<input value="${title}" id='titleText' type='text' name="title" placeholder="Put title here">
-					</div>
-					<div class='input-field'>
-						<label for='text'>Text:</label>
-						<textarea value="${text}" id='textyText' type='text' name="text-area" placeholder="Put description here"></textarea>
-					</div>
-					<div class='input-field'>
-						<label for='tag'>Tag:</label>
-						<input value="${tags}" id="tags" type="text" name="tag" placeholder="Separate with space">
-					</div>
-					<button id="editNote" type='submit' value='submit'>Edit Note</button>
-				</div>`
+					// This part can then update the notes and then do a getAllNotes()
+					app.getAllNotes()
+					console.log('I okay')
+					// Then replace the edited note area with the OG create note area
+					app.replaceCreateNote()
 
-					document.querySelector('#create-note').innerHTML = templateLiteral
-					document.querySelector('#editNote').addEventListener('click', event => {
-
-					})
 				}
 			})
 	},
@@ -264,7 +261,7 @@ const app = {
 		})
 			.then(response => {
 				if (response.ok) {
-					app.data.notes = app.data.notes.notes.filter((note) => note._id !== noteID)
+					app.data.notes = app.data.nuggets.notes.filter((note) => note._id !== noteID)
 					app.getAllNotes()
 				}
 			})
@@ -327,8 +324,6 @@ function main() {
 		console.log({ tags }, { textyText }, { title })
 		app.createNote(title, textyText, tags)
 	})
-
-	document.querySelector('#notes')
 }
 
 main();
