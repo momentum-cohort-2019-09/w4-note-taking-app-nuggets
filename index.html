@@ -12,23 +12,40 @@
 </head>
 <body>
     <h1>Nugget Notes</h1>
-    
-    <form id="login">
-        <div class='input-field'>
-            <label for='username'>Username:</label>
-            <input id='username-text' type='text' name="username" placeholder="LarrySommers">
+    <div id="replacement"> <!-- id = createNote-->
+        <form id="login">
+            <div class = 'input-field'>
+                <label for='username'>Username:</label>
+                <input id='username-text' type='text' name="username" placeholder="LarrySommers">
+            </div>
+            <div class='input-field'>
+                <label for='password'>Password:</label>
+                <input id='password-text' type='password' name="password" placeholder="TheLarryPass">
+            </div>
+            <div id="error"></div>
+            <button type='submit' value='submit'>Sign In</button>
+        </form>
+    </div>
+
+    <form id="createNote" class="hidden" action="">
+        <div id='create-note'>
+            <div class='input-field'>
+                <label for='title'>Title:</label>
+                <input id='titleText' type='text' name="title" placeholder="Put title here">
+            </div>
+            <div class='input-field'>
+                <label for='text'>Text:</label>
+                <textarea id='textyText' type='text' name="text-area" placeholder="Put description here"></textarea>
+            </div>
+            <div class='input-field'>
+                <label for='tag'>Tag:</label>
+                <input id="tags" type="text" name="tag" placeholder="Separate with space">
+            </div>
+            <button id="submitNote" type='submit' value='submit'>Submit Note</button>
         </div>
-        <div class='input-field'>
-            <label for='password'>Password:</label>
-            <input id='password-text' type='password' name="password" placeholder="TheLarryPass">
-        </div>
-        <div id="error"></div>
-        <button type='submit' value='submit'>Sign In</button>
     </form>
 
-    <form id="createNote"></form>
-
-    <div id="notes"></div>
+    <form id="notes"></form>
 </body>
 </html>
 

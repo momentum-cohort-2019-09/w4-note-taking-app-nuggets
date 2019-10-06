@@ -39,6 +39,20 @@ h1 {
 	justify-content: space-between;
 }
 
+#notes {
+	visibility: visible;
+	padding: 40px;
+	padding: 2rem;
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+}
+
 .note {
-	max-width: 200px;
+	max-width: 250px;
+	border: 1px solid black;
+}
+
+.hidden {
+	display: none;
 }
