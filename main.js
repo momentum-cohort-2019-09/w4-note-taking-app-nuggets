@@ -1,8 +1,8 @@
 const app = {
 	data: {
 		credentials: {
-			username: 'charlie'/*sessionStorage.getItem('username')*/,
-			password: 'mypass'/*sessionStorage.getItem('password')*/
+			username: sessionStorage.getItem('username'),
+			password: sessionStorage.getItem('password')
 		},
 		nuggets: []
 	},
@@ -15,10 +15,9 @@ const app = {
 
 	setCredentials: function (username, password) {
 		this.data.credentials = {
-			'username': username,
-			'password': password
+			username: username,
+			password: password
 		};
-		console.log({ username, password })
 		sessionStorage.setItem('username', username);
 		sessionStorage.setItem('password', password);
 	},
@@ -53,7 +52,6 @@ const app = {
 				return response.json()
 			})
 			.then(function (data) {
-				console.log({ data })
 				app.data.nuggets = data
 				app.render()
 			})
@@ -61,34 +59,19 @@ const app = {
 
 	render: function () {
 		document.querySelector('#createNote').classList.remove('hidden')
-		let createNote = document.querySelector('#createNote')
-		if (!createNote) {
-			document.querySelector('#createNote').innerHTML = `
-					<div class='input-field'>
-						<label for='title'>Title:</label>
-						<input id='title-text' type='text' name="title" placeholder="Put title here">
-					</div>
-					<div class='input-field'>
-						<label for='text'>Text:</label>
-						<textarea id='textyText' type='text' name="text-area" placeholder="Put description here"></textarea>
-					</div>
-					<div class='input-field'>
-						<label for='tag'>Tag:</label>
-						<input id="tags" type="text" name="tag" placeholder="Separate with comma">
-					</div>
-					<button id="submitNote" type='submit' value='submit'>Submit Note</button>
-				`
-		}
+		document.querySelector('#getAll').addEventListener('click', event => {
+			event.preventDefault()
+			document.querySelector('#getAll').classList.add('hidden')
+			this.getAllNotes()
+		})
 
 		this.replaceCreateNote()
 
 		let templateLiteral = ``
 		let noteIds = []
-		let Nuggets = app.data.nuggets.notes
-		console.log(Nuggets)
-		console.log(app)
+		let Nuggets = app.data.nuggets
+		console.log({ Nuggets })
 		for (let note of app.data.nuggets.notes) {
-			console.log(note)
 			tags = ``
 			for (let tag of note.tags) {
 				tags += `
@@ -155,7 +138,6 @@ const app = {
 
 	createNote: function (title, text, tags) {
 		let tagsSplit = tags.split(' ').map(tag => tag)
-		console.log({ tagsSplit })
 		fetch("https://notes-api.glitch.me/api/notes", {
 			method: 'POST',
 			body: JSON.stringify({ "title": title, "text": text, "tags": tagsSplit }),
@@ -176,8 +158,8 @@ const app = {
 	},
 
 	replaceCreateNote: function () {
-		let newCreateNote = document.querySelector('#createNote')
-		newCreateNote.innerHTML = `
+		document.querySelector('#createNote').innerHTML = `
+						<h4>Create Note</h4>
             <div class='input-field'>
                 <label for='title'>Title:</label>
                 <input id='titleText' type='text' name="title" placeholder="Put title here">
@@ -190,7 +172,8 @@ const app = {
                 <label for='tag'>Tag:</label>
                 <input id="tags" type="text" name="tag" placeholder="Separate with comma and space">
             </div>
-            <button id="submitNote" type='submit' value='submit'>Submit Note</button>
+			<button id="submitNote" type='submit' value='submit'>Submit Note</button>
+			<button id="getAll" class="hidden">Get Back Notes</button>
 		`
 
 		let submitNote = document.querySelector('#submitNote')
@@ -199,7 +182,6 @@ const app = {
 			let title = document.querySelector('#titleText').value
 			let textyText = document.querySelector('#textyText').value
 			let tags = document.querySelector('#tags').value
-			console.log({ tags }, { textyText }, { title })
 			app.createNote(title, textyText, tags)
 		})
 	},
@@ -242,9 +224,6 @@ const app = {
 			}
 		}
 
-		console.log({ noteID })
-		console.log({ tags })
-
 		fetch(`https://notes-api.glitch.me/api/notes/${noteID}`, {
 			method: 'PUT',
 			body: JSON.stringify({ "title": title, "text": text, "tags": tags }),
@@ -285,6 +264,7 @@ const app = {
 		})
 			.then(response => response.json())
 			.then(data => {
+				document.querySelector('#getAll').classList.remove('hidden')
 				app.data.nuggets = data
 				this.render()
 			})
@@ -318,7 +298,6 @@ function main() {
 
 		const username = loginData.get('username');
 		const password = loginData.get('password');
-		console.log({ username, password })
 
 		app.login(username, password);
 		app.getAllNotes();
@@ -331,7 +310,6 @@ function main() {
 		let title = document.querySelector('#titleText').value
 		let textyText = document.querySelector('#textyText').value
 		let tags = document.querySelector('#tags').value
-		console.log({ tags }, { textyText }, { title })
 		app.createNote(title, textyText, tags)
 	})
 }
