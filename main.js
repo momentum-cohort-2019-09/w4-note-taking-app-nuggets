@@ -45,7 +45,6 @@ const app = {
 	},
 
 	getAllNotes: function () {
-		// Access the array and place all notes in our note div
 		fetch("https://notes-api.glitch.me/api/notes", {
 			headers: {
 				'Authorization': this.setAuthHeader(),
@@ -61,27 +60,35 @@ const app = {
 			})
 	},
 
+	renderNugget: function() {
+
+	},
+
 	render: function () {
 
 		let templateLiteral = ``
+		let noteIds = []
 		console.log({ app })
 		for (let note of this.data.notes.notes) {
+			noteIds.push(note._id)
 			tags = ``
 			for (let tag of note.tags) {
 				tags += `
-				<button class="tag">${tag}</button>\n
+				<button class="tag">${tag}</button>
 				`
 			}
+			let noteID = note._id
+			console.log({noteID})
 			templateLiteral += `
-				<div class="note">
+				<div class="note" data-id="${note._id}>
 					<h4 class="title">${note.title}</h4>
 					<p class="text">${note.text}</p>
 					<ul class="tag-list">
 						${tags}
 					</ul>
-					<button type="button" class="update">Update</button>
-					<button type="button" class="trash">Delete</button
-				</div>
+					<button type="button" class="update">Edit</button>
+					<button type="button" class="delete">Delete</button>
+				</div> 
 			`
 			document.querySelector('#notes').innerHTML = templateLiteral
 		}
@@ -96,6 +103,16 @@ const app = {
 			})
 		}
 
+		let deleteNodes = document.querySelectorAll('.delete')
+		console.log({deleteNodes})
+		for (let deleteNode of deleteNodes) {
+			deleteNode.addEventListener('click', event => {
+				event.preventDefault()
+				let id = deleteNode.dataset.id
+				console.log({ id })
+				this.deleteNote(deleteNode.parentNode.dataset.id)
+			})
+		}
 	},
 
 	createNote: function (title, text, tags) {
@@ -143,15 +160,22 @@ const app = {
 
 	},
 
-	deleteNote: function (note) {
-		// Needs to be able to DELETE a given note from the users notes array
-		// Then also DELETE the note from the API as well.
-		// Using DELETE with https://notes-api.glitch.me/api/notes/:id
-
+	deleteNote: function (noteID) {
+		fetch(`https://notes-api.glitch.me/api/notes/${noteID}`, {
+			method: 'DELETE',
+			headers: {
+				Authorization: this.setAuthHeader()
+			}
+		})
+		.then(response => {
+			if(response.ok) {
+				app.data.notes = app.data.notes.filter((note) => note._id !== noteID)
+				app.getAllNotes()
+			} 
+		})
 	},
 
 	getTaggedNotes: function (tag) {
-		console.log({ tag })
 		fetch(`https://notes-api.glitch.me/api/notes/tagged/${tag}`, {
 			headers: {
 				'Authorization': this.setAuthHeader()
@@ -190,7 +214,7 @@ function main() {
 		app.createNote(title, textyText, tags)
 	})
 
-	
+	document.querySelector('#notes')
 }
 
 main();
