@@ -1,24 +1,24 @@
 const app = {
 	data: {
 		credentials: {
-			username: sessionStorage.getItem('username'),
-			password: sessionStorage.getItem('password')
+			username: 'charlie'/*sessionStorage.getItem('username')*/,
+			password: 'mypass'/*sessionStorage.getItem('password')*/
 		},
 		nuggets: []
 	},
 	setAuthHeader: function (headers) {
-		if (!headers) {
-			header = {}
-		}
-
+		let username = this.data.credentials.username
+		let password = this.data.credentials.password
+		console.log({ username, password })
 		return 'Basic ' + btoa(`${this.data.credentials.username}:${this.data.credentials.password}`)
 	},
 
 	setCredentials: function (username, password) {
 		this.data.credentials = {
-			username: username,
-			password: password
+			'username': username,
+			'password': password
 		};
+		console.log({ username, password })
 		sessionStorage.setItem('username', username);
 		sessionStorage.setItem('password', password);
 	},
@@ -27,7 +27,7 @@ const app = {
 	login: function (username, password) {
 		fetch('https://notes-api.glitch.me/api/notes', {
 			headers: {
-				'Authorization': 'Basic ' + btoa(`usernam`)
+				'Authorization': 'Basic ' + btoa(`${username}:${password}`)
 			}
 		})
 			.then(response => {
@@ -53,6 +53,7 @@ const app = {
 				return response.json()
 			})
 			.then(function (data) {
+				console.log({ data })
 				app.data.nuggets = data
 				app.render()
 			})
@@ -83,7 +84,11 @@ const app = {
 
 		let templateLiteral = ``
 		let noteIds = []
+		let Nuggets = app.data.nuggets.notes
+		console.log(Nuggets)
+		console.log(app)
 		for (let note of app.data.nuggets.notes) {
+			console.log(note)
 			tags = ``
 			for (let tag of note.tags) {
 				tags += `
