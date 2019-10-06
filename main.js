@@ -194,7 +194,7 @@ const app = {
 		`
 
 		let submitNote = document.querySelector('#submitNote')
-		submitNote.addEventListener('submit', event => {
+		submitNote.addEventListener('click', event => {
 			event.preventDefault()
 			let title = document.querySelector('#titleText').value
 			let textyText = document.querySelector('#textyText').value
@@ -233,11 +233,17 @@ const app = {
 	updateNote: function (noteID, parent) {
 		let title = parent[0].value
 		let text = parent[1].value
-		if (!tags.value) {
-			let tags = []
-		} else {
-			let tags = parent[2].value.split(' ')
+		let tags = parent[2].value.split(' ')
+		for (let tag of tags) {
+			if (tag === '') {
+				tags.splice(tags.indexOf(tag), 1)
+			} else {
+				tag.trim()
+			}
 		}
+
+		console.log({ noteID })
+		console.log({ tags })
 
 		fetch(`https://notes-api.glitch.me/api/notes/${noteID}`, {
 			method: 'PUT',
