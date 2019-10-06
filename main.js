@@ -60,9 +60,9 @@ const app = {
 			})
 	},
 
-	renderNugget: function() {
+	// renderNugget: function() {
 
-	},
+	// },
 
 	render: function () {
 
@@ -117,10 +117,21 @@ const app = {
 				this.deleteNote(deleteNode.parentNode.dataset.id)
 			})
 		}
+
+		let editNodes = document.querySelectorAll('.update')
+		for(let editNode of editNodes) {
+			editNode.addEventListener('click', event => {
+			event.preventDefault()
+			let parent = editNode.parentElement
+			console.log({parent})
+			this.updateNote(parent)
+			})
+		}
+		
 	},
 
 	createNote: function (title, text, tags) {
-		let tagsSplit = tags.split(',').map(tag => tag)
+		let tagsSplit = tags.split(' ').map(tag => tag)
 		console.log({tagsSplit})
 		fetch("https://notes-api.glitch.me/api/notes", {
 			method: 'POST',
@@ -157,11 +168,45 @@ const app = {
         </div>`
 	},
 
-	updateNote: function () {
-		// Needs to be able to take the given note and update title, text, and tags
-		// Using PUT with https://notes-api.glitch.me/api/notes/:id
+	updateNote: function (parent) {
+		console.log({parent})
+		let noteID = parent.dataset.id
+		console.log({noteID})
+		let title = parent.children[0].innerText
+		let text = parent.children[1].innerText
+		let tags = parent.children[2].innerText
+		fetch(`https://notes-api.glitch.me/api/notes/${noteID}`, {
+			method: 'PUT',
+			headers: {
+				Authorization: this.setAuthHeader(),
+				'Content-Type': 
+			}
+		})
+		.then(response => {
+			if(response.ok) {
+				let templateLiteral = `
+				<div id='create-note'>
+					<div class='input-field'>
+						<label for='title'>Title:</label>
+						<input value="${title}" id='titleText' type='text' name="title" placeholder="Put title here">
+					</div>
+					<div class='input-field'>
+						<label for='text'>Text:</label>
+						<textarea value="${text}" id='textyText' type='text' name="text-area" placeholder="Put description here"></textarea>
+					</div>
+					<div class='input-field'>
+						<label for='tag'>Tag:</label>
+						<input value="${tags}" id="tags" type="text" name="tag" placeholder="Separate with space">
+					</div>
+					<button id="editNote" type='submit' value='submit'>Edit Note</button>
+				</div>`
 
+				document.querySelector('#create-note').innerHTML = templateLiteral
+				document.querySelector('#editNote').addEventListener('click', event => {
 
+				})
+			}
+		})
 	},
 
 	deleteNote: function (noteID) {

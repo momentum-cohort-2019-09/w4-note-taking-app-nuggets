@@ -30,7 +30,7 @@ h1 {
 #notes {
 	visibility: visible;
 	padding: 40px;
-	padding: 1rem;
+	padding: 2rem;
 	display: flex;
 	flex-wrap: wrap;
 	flex-direction: row;
